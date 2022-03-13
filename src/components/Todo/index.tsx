@@ -1,11 +1,13 @@
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
-import { Button, ButtonNewTask, ButtonClose, ButtonRemove, Container, ContainerTodo, Header, ModalContainer, TaskContainer, TaskList, TasksCompleted, TaskTitle } from './styles';
-import { FiCheck, FiCheckSquare, FiCircle, FiPlus, FiRotateCcw, FiTrash2, FiX } from 'react-icons/fi';
+import { Button,  ButtonRemove, Container, ContainerTodo,
+  TaskContainer, TaskList, TasksCompleted, TaskTitle, HeaderTodo, NewTask } from './styles';
+import { FiArrowRight, FiCheckSquare, FiCircle,  FiRotateCcw, FiTrash2, FiX } from 'react-icons/fi';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { useUser } from '../../contexts/userContext';
 import { useSession } from 'next-auth/react';
+import { Title } from '../../../styles/GlobalComponents';
 
 interface ITask {
   id: string;
@@ -20,7 +22,7 @@ const Todo: React.FC = () => {
   const [completedTaskList, setCompletedTaskList] = useState<ITask[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { email, id, name } = useUser()
+  const { id } = useUser()
   const { data: session } = useSession()
 
   const inputRef = React.useRef<any>();
@@ -125,23 +127,6 @@ const Todo: React.FC = () => {
   }
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.altKey && e.keyCode === 13) {
-        handleModal();
-      }
-      return
-    }
-    window.addEventListener('keydown', handleKeyDown);
-
-    if (modalOpen === true && inputRef.current) {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 500);
-    }
-
-  }, [modalOpen])
-
-  useEffect(() => {
     if (id) {
       handleGetTasks()
     }
@@ -176,7 +161,16 @@ const Todo: React.FC = () => {
   return (
     <Container>
       <ContainerTodo>
-        <ButtonNewTask onClick={handleModal}><FiPlus /> Nova tarefa</ButtonNewTask>
+        <HeaderTodo>
+          <Title>Todo List</Title>
+          <NewTask onSubmit={(event) => {
+            event.preventDefault()
+            handleAddTask(taskData)
+          }}>
+            <input value={taskData?.title || ''} onChange={event => setTaskData({ ...taskData, title: event.target.value || '', id: uuidv4(), done: false })} type="text" placeholder="Nova tarefa" />
+            <Button type='submit'><FiArrowRight /></Button>
+          </NewTask>
+        </HeaderTodo>
         <TaskContainer>
           <TaskTitle>{taskList.length <= 1 ? 'Tarefa' : 'Tarefas'} {taskList.length}</TaskTitle>
           <TaskList>
@@ -223,20 +217,8 @@ const Todo: React.FC = () => {
                 )
               }).reverse()}
             </TaskList>
-
           </TasksCompleted>
         )}
-        {modalOpen == true ? (
-          <ModalContainer onSubmit={(event?: FormEvent) => {
-            event?.preventDefault()
-            handleAddTask(taskData)
-          }} >
-            <ButtonClose type='button' onClick={() => setModalOpen(false)}><FiX /></ButtonClose>
-            <h2>Adicionar tarefa</h2>
-            <input value={taskData?.title || ''} onChange={event => setTaskData({ ...taskData, title: event.target.value || '', id: uuidv4(), done: false })} type="text" placeholder="Título" />
-            <Button type='submit'>Adicionar</Button>
-          </ModalContainer>
-        ) : null}
       </ContainerTodo>
     </Container>
   )

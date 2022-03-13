@@ -1,13 +1,13 @@
 const light = {
     title: 'light',
     colors: {
-        primary: '#ff5e57',
+        primary: '#5F00BA',
         secondary: '#3c40c6',
         tertiary: '#0be881',
-        quaternary: '#2196f3',
+        quaternary: '#7BE0AD',
         quinary: '#e91e63',
         background: '#fefefe',
-        text: '#000',
+        text: '#464646',
         textInactive: '#fff',
         border: '#d1d1d1',
     }

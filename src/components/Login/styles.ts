@@ -18,7 +18,7 @@ export const LoginContainer = styled.div`
     padding: 1rem 3rem;
     margin: 1rem;
     border: 1px solid #e5e5e5;
-    position: absolute;
+    position: fixed;
     top: 2rem;
     right: 2rem;
     min-width: 30rem;
@@ -37,15 +37,23 @@ export const LoginContainer = styled.div`
         border-radius: 5px;
     }
 
-    @media only screen and (max-width: 600px) {
-        width: 90%;
-        min-width: auto;
+    @media only screen and (max-width: 1024px) {
+        width: 100%;
+        /* height: 100%; */
+        position: fixed;
         top: 0;
         left: 0;
-        padding: .5rem;
-    }
+        right: 0;
+        bottom: 0;
+        margin: 0;
+        border: none;
+        padding: 1rem;
+        min-width: auto;
+        line-height: 1.5;
+        border-radius: 0;
 
-   
+    }       
+
 `;
 
 export const IconUser = styled.div`
@@ -84,6 +92,7 @@ export const Header = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    flex-wrap: wrap;
 
     svg{
         font-size: 1.6rem;

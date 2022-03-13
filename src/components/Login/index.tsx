@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
 import { DataUser, Header, IconUser, LoginContainer } from './styles';
-import { useSession, signIn, signOut, } from "next-auth/react"
+import { useSession, signIn, } from "next-auth/react"
 import Image from 'next/image'
 import { FcGoogle } from 'react-icons/fc'
-import { ButtonClose } from '../Todo/styles';
 import axios from 'axios';
 import { useUser } from '../../contexts/userContext';
 
 const Login: React.FC = () => {
     const { data: session, } = useSession()
     const [auth, setAuth] = React.useState(false)
-
     const { setAuth: SetDataAuth, } = useUser()
 
     const handleSignInEasyTodo = async () => {
@@ -36,7 +34,7 @@ const Login: React.FC = () => {
                 setAuth(true)
             }, 4000)
         }
-    }, [session])
+    }, [session, ])
 
     return (
         <LoginContainer auth={auth} >

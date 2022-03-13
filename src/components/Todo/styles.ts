@@ -4,50 +4,35 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background-color: ${({ theme }) => theme.colors.textInactive};
-    padding: 2rem ;
+    height: 100% ;
+    max-height: 86vh;
+    border-radius: 2rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05);
 
-    @media only screen and (max-width: 1024px) {
-        padding: 2rem ;
+    @media only screen and (max-width: 530px){
+        border-radius: 0;
     }
 
-    @media only screen and (max-width: 500px) {
-        padding: .5rem ;
-    }
 `;
 
 export const ContainerTodo = styled.div`
-    width: 80%;
-    height: 80%;
-    /* max-width: 30rem; */
-    min-height: 80vh;
-    max-height: 95vh !important;
-    border-radius: .5rem;
+    width: 100%;
+    height: auto;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 5rem 1fr auto;
-    border: .1rem solid ${props => props.theme.colors.border};
-    background-color: ${props => props.theme.colors.background};
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    grid-template-rows: auto auto auto;
     position: relative;
     overflow: hidden ;
-    @media only screen and (max-width: 1024px) {
-        width: 100%;
-        height: 100%;
-    }
-`;
+    padding: 2rem;
 
-export const Header = styled.div`
-    width: 100%;
-    height: 100%;
-    padding: 0 2rem;    
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: .1rem solid ${props => props.theme.colors.border};
-    h1{
-        font-size: 1.25rem;
+    @media only screen and (max-width: 425px){
+        padding: 1rem;
+    }
+
+    @media only screen and (max-width: 375px){
+        padding: .5rem;
     }
 `;
 
@@ -58,8 +43,10 @@ export const TaskContainer = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 2rem;
-    max-height: 25rem;
+    padding: 1rem;
+    max-height: 20rem;
+
+    
 `;
 
 export const TaskTitle = styled.h2`
@@ -78,6 +65,32 @@ export const TaskList = styled.ul`
     margin: 1rem 0;
     padding: 0 .5rem;
     overflow-y: scroll;
+    max-height: 20rem;
+
+    ::-webkit-scrollbar {
+        width: .5rem;
+
+    }
+
+    ::-webkit-scrollbar-track {
+        background: ${props => props.theme.colors.background};
+
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: ${props => props.theme.colors.text};
+        border-radius: .5rem;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: ${props => props.theme.colors.textInactive};
+
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+        background: ${props => props.theme.colors.textInactive};    
+
+    }
 
    
     & li {
@@ -88,7 +101,6 @@ export const TaskList = styled.ul`
         justify-content: space-between;
         align-items: center;
         padding: .75rem 1rem;
-        /* background-color: #f0f; */
 
         input[type="checkbox"] {
             margin-right: .5rem;
@@ -145,113 +157,13 @@ export const TaskList = styled.ul`
     }
 `;
 
-export const ButtonNewTask = styled.button`
-    border: none;
-    background-color: ${props => props.theme.colors.secondary};
-    color: ${props => props.theme.colors.textInactive};
-    cursor: pointer;
-    outline: none;
-    transition: all .2s ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem 1rem;
-    border-radius: .5rem .5rem 0 0 ;
-    font-size: 1.2rem;
-    font-weight: 600;
-
-    svg{
-        font-size: 1.5rem;
-        margin-right: .5rem;
-    }
-
-    &:hover{
-        background-color: ${props => props.theme.colors.secondary};
-    }
-`;
-
-
-const animateModalContainer = keyframes`
-    0% {
-        transform: scale(0);
-        opacity: 0;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-`;
-
-
-export const ModalContainer = styled.form`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    background-color: ${props => props.theme.colors.background};
-    border-radius: .5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    animation: ${animateModalContainer} .24s ease-in-out;
-    padding: 2rem;
-
-    & h2{
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: ${props => props.theme.colors.text};
-        margin: 0 0 1rem 0;
-    }
-
-    & input{
-        width: 90%;
-        height: 3rem;
-        border-radius: .5rem;
-        border: .1rem solid ${props => props.theme.colors.border};
-        padding: .5rem 1rem;
-        margin-bottom: 1rem;
-        font-size: 1rem;
-        color: ${props => props.theme.colors.text};
-        outline: none;
-        transition: all .2s ease-in-out;
-        margin: 0 0 1rem 0;
-    }
-`;
-
-export const ButtonClose = styled.button`
-    width: 3rem;
-    height: 3rem;
-    border: none;
-    background-color: ${props => props.theme.colors.secondary};
-    color: ${props => props.theme.colors.textInactive};
-    cursor: pointer;
-    outline: none;
-    transition: all .2s ease-in-out;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1  ;
-
-    :hover{
-        background-color: ${props => props.theme.colors.secondary};
-    }
-`;
-
 export const Button = styled.button`
     width: fit-content;
-    padding: .5rem 2rem;
-    height: 3rem;
+    padding: .5rem 1rem;
+    height: 3.2rem;
     border-radius: .5rem;
     border: none;
-    background-color: ${props => props.theme.colors.secondary};
+    background-color: ${props => props.theme.colors.primary};
     color: ${props => props.theme.colors.textInactive};
     cursor: pointer;
     outline: none;
@@ -270,7 +182,7 @@ export const Button = styled.button`
 
 export const TasksCompleted = styled.div`
     width: 100%;
-    height: fit-content;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -303,5 +215,41 @@ export const ButtonRemove = styled.button`
 
     svg{
         font-size: 1.5rem;
+    }
+`;
+
+export const HeaderTodo = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    height: fit-content;
+    /* border-bottom: .1rem solid ${props => props.theme.colors.border}; */
+    padding: 1rem;
+
+    h1{
+        color: ${props => props.theme.colors.text};
+    }
+`;
+
+export const NewTask = styled.form`  
+    display: flex;
+    width: 100%;
+    margin-top: 1rem;
+
+
+    input{
+        width: 90%;
+        height: 3.2rem;
+        border-radius: .5rem;
+        border: .15rem solid ${props => props.theme.colors.border};
+        padding: .5rem 1rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        color: ${props => props.theme.colors.text};
+        outline: none;
+        transition: all .2s ease-in-out;
+        margin: 0 .5rem 1rem 0;
     }
 `;
