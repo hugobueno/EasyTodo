@@ -1,13 +1,16 @@
 import React, { FormEvent, useEffect, useState, useRef } from 'react';
 
-import { Button,  ButtonRemove, Container, ContainerTodo,
-  TaskContainer, TaskList, TasksCompleted, TaskTitle, HeaderTodo, NewTask } from './styles';
-import { FiArrowRight, FiCheckSquare, FiCircle,  FiRotateCcw, FiTrash2, FiX } from 'react-icons/fi';
+import {
+  Button, ButtonRemove, Container, ContainerTodo,
+  TaskContainer, TaskList, TasksCompleted, TaskTitle, HeaderTodo, NewTask
+} from './styles';
+import { FiArrowRight, FiCheckSquare, FiCircle, FiRotateCcw, FiTrash2, FiX } from 'react-icons/fi';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { useUser } from '../../contexts/userContext';
 import { useSession } from 'next-auth/react';
 import { Title } from '../../../styles/GlobalComponents';
+import Skeletron from '../Skeletron';
 
 interface ITask {
   id: string;
@@ -21,6 +24,7 @@ const Todo: React.FC = () => {
   const [taskList, setTaskList] = useState<ITask[]>([]);
   const [completedTaskList, setCompletedTaskList] = useState<ITask[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [isFetch, setIsFetch] = useState(false);
 
   const { id } = useUser()
   const { data: session } = useSession()
@@ -134,6 +138,7 @@ const Todo: React.FC = () => {
 
   const handleGetTasks = async () => {
     try {
+      setIsFetch(true);
       const { data } = await axios.get(`/api/mongo/getTasks`, {
         params: {
           userId: id
@@ -151,6 +156,7 @@ const Todo: React.FC = () => {
         const completedTasks = transformData.filter((item: any) => item.done === true);
         setCompletedTaskList(completedTasks);
         setTaskList([...taskList, ...unCompletedTasks])
+        setIsFetch(false);
       }
     } catch (error) {
       console.log(error);
@@ -174,23 +180,33 @@ const Todo: React.FC = () => {
         <TaskContainer>
           <TaskTitle>{taskList.length <= 1 ? 'Tarefa' : 'Tarefas'} {taskList.length}</TaskTitle>
           <TaskList>
-            {taskList?.map(task => {
-              return (
-                <li key={task.id.toString()}>
-                  <div>
-                    <input ref={inputRef} hidden onClick={(event) => {
-                      event.currentTarget.checked ? handleCheckTask(task) : handleReturnTask(task)
-                    }} name='check' id={task.id.toString()} type="checkbox" />
-                    <label className={task.done ? 'completed' : 'no_completed'} htmlFor={task.id.toString()}>
-                      <FiCircle />
-                      {task.title}
-                    </label>
-                  </div>
-                  <ButtonRemove onClick={() => handleRemoveTask(task.id)}><FiTrash2 /></ButtonRemove>
-                </li>
-              )
-            })}
-            {!taskList.length && <p>Não há tarefas cadastradas</p>}
+            {isFetch ? (
+              <>
+                <Skeletron width='100%' height='2rem' />
+                <Skeletron width='100%' height='2rem' />
+                <Skeletron width='100%' height='2rem' />
+                <Skeletron width='100%' height='2rem' />
+              </>
+            ) : (
+              taskList?.map(task => {
+                return (
+                  <li key={task.id.toString()}>
+                    <div>
+                      <input ref={inputRef} hidden onClick={(event) => {
+                        event.currentTarget.checked ? handleCheckTask(task) : handleReturnTask(task)
+                      }} name='check' id={task.id.toString()} type="checkbox" />
+                      <label className={task.done ? 'completed' : 'no_completed'} htmlFor={task.id.toString()}>
+                        <FiCircle />
+                        {task.title}
+                      </label>
+                    </div>
+                    <ButtonRemove onClick={() => handleRemoveTask(task.id)}><FiTrash2 /></ButtonRemove>
+                  </li>
+                )
+              })
+            )}
+
+            {!isFetch && !taskList.length && <p>Não há tarefas cadastradas</p>}
           </TaskList>
         </TaskContainer>
         {completedTaskList.length >= 1 && (
