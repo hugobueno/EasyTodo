@@ -119,3 +119,17 @@ export const User = styled.div`
             font-size: .85rem;
         }
 `;
+
+export const Logo = styled.div`
+    margin: 1rem;
+    height: 3rem;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: ${props => props.theme.colors.primary};
+
+    svg{
+        margin-right: .25rem;
+    }
+`;
