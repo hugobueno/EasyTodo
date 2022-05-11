@@ -7,12 +7,14 @@ export const Container = styled.div`
     justify-content: flex-start;
     background-color: ${({ theme }) => theme.colors.textInactive};
     height: 100% ;
+    width: 100%;
     max-height: 86vh;
     border-radius: 2rem;
     box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.05);
 
     @media only screen and (max-width: 530px){
-        border-radius: 0;
+        border-radius: .5rem;
+        padding: 1rem;
     }
 
 `;
@@ -28,7 +30,6 @@ export const ContainerTodo = styled.div`
     overflow: hidden ;
     padding: 2rem;
     grid-gap: 2rem;
-    /* background-color: #f0f; */
     overflow-y: auto;
 
 

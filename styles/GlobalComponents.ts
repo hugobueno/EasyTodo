@@ -19,6 +19,7 @@ export const Container = styled.main`
     height: auto !important;
     width: 100%;
     min-height: 88vh;
+    padding: .5rem;
 `;
 
 export const Wrapper = styled.div`
