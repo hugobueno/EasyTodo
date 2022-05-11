@@ -3,19 +3,35 @@ import { FiFastForward, FiPause, FiPlay, FiRefreshCcw, } from 'react-icons/fi';
 import { ThemeContext } from 'styled-components';
 import { Title } from '../../../styles/GlobalComponents';
 import { Container, Timer, ContainerControlers, Button, DetailPomo, Badge, PomoTimer, PomoHeader, CardDetail } from './styles';
+import { useRef } from 'react';
+
+
 
 const Pomodoro: React.FC = () => {
 
     const { colors } = useContext(ThemeContext);
     const defaultTime = 25 * 60;
     const smallBreakTime = 5 * 60;
-    const bigBreakTime = 15 * 60;
+    const bigBreakTime = 10 * 60;
     const [time, setTime] = useState(defaultTime);
     const [isRunning, setIsRunning] = useState(false);
     const [isFinished, setIsFinished] = useState(false);
     const [isBreak, setIsBreak] = useState(false);
     const [pomos, setPomos] = useState(0);
     const [breaks, setBreaks] = useState(0);
+
+    const audioRef = useRef<HTMLAudioElement>(null)
+
+    const [isPlaying, setIsPlaying] = useState(false)
+
+    function setPlayingState(state:boolean) {
+      setIsPlaying(state)
+    }
+  
+    function toggleIsPlaying() {
+      setIsPlaying(!isPlaying)
+    }
+  
 
     const handleStart = () => {
         setIsRunning(true);
@@ -45,6 +61,8 @@ const Pomodoro: React.FC = () => {
             setIsBreak(true)
             setTime(timeBreack)
             setBreaks(breaks + 1)
+            setPlayingState(true)
+
         }
         if (time === 0 && isBreak) {
             setIsRunning(false)
@@ -52,6 +70,7 @@ const Pomodoro: React.FC = () => {
             setIsFinished(true)
             setTime(defaultTime)
             setPomos(pomos + 1)
+            setPlayingState(true)
         }
     }, [time])
 
@@ -65,6 +84,19 @@ const Pomodoro: React.FC = () => {
         }
     }, [isRunning]);
 
+    useEffect(()=> {
+        if (!audioRef.current) {
+            return;
+        }
+    
+        if (isPlaying) {
+            audioRef.current.play()
+        } else {
+            audioRef.current.pause()
+        }
+      }, [isPlaying])
+    
+
     return (
 
         <Container>
@@ -76,12 +108,22 @@ const Pomodoro: React.FC = () => {
                     <h1>EasyPomo</h1>
                     <h2>{Math.floor(time / 60)}:{time % 60 < 10 ? '0' : ''}{time % 60}</h2>
                 </Timer>
+
                 <ContainerControlers>
                     <div>
+                        <audio
+                            src='/audio/beep.mp3'
+                            autoPlay={true}
+                            ref={audioRef}
+                            onPlay={() => setPlayingState(true)}
+                            onPause={() => setPlayingState(false)}
+                        />
                         {isRunning ? (
                             <Button isActive={isRunning} onClick={handlePause}>Pause <FiPause /></Button>
                         ) : (
-                            <Button isActive={isRunning} onClick={handleStart}>Iniciar <FiPlay /></Button>
+                            <Button isActive={isRunning} onClick={()=>{
+                                handleStart()
+                            }}>Iniciar <FiPlay /></Button>
                         )}
                         <Button onClick={handleReset}>Reiniciar <FiRefreshCcw /></Button>
                         <Button onClick={handleFinish}>Pular <FiFastForward /></Button>
@@ -99,6 +141,7 @@ const Pomodoro: React.FC = () => {
                     <h2>{breaks}</h2>
                     <Badge bgColor={colors.quaternary}>Completos</Badge>
                 </CardDetail>
+
             </DetailPomo>
         </Container>
     )

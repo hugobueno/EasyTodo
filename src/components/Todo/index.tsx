@@ -167,74 +167,74 @@ const Todo: React.FC = () => {
   return (
     <Container>
       <ContainerTodo>
-        <HeaderTodo>
-          <Title>Todo List</Title>
-          <NewTask onSubmit={(event) => {
-            event.preventDefault()
-            handleAddTask(taskData)
-          }}>
-            <input value={taskData?.title || ''} onChange={event => setTaskData({ ...taskData, title: event.target.value || '', id: uuidv4(), done: false })} type="text" placeholder="Nova tarefa" />
-            <Button type='submit'><FiArrowRight /></Button>
-          </NewTask>
-        </HeaderTodo>
-        <TaskContainer>
-          <TaskTitle>{taskList.length <= 1 ? 'Tarefa' : 'Tarefas'} {taskList.length}</TaskTitle>
-          <TaskList>
-            {isFetch ? (
-              <>
-                <Skeletron width='100%' height='2rem' />
-                <Skeletron width='100%' height='2rem' />
-                <Skeletron width='100%' height='2rem' />
-                <Skeletron width='100%' height='2rem' />
-              </>
-            ) : (
-              taskList?.map(task => {
-                return (
-                  <li key={task.id.toString()}>
-                    <div>
-                      <input ref={inputRef} hidden onClick={(event) => {
-                        event.currentTarget.checked ? handleCheckTask(task) : handleReturnTask(task)
-                      }} name='check' id={task.id.toString()} type="checkbox" />
-                      <label className={task.done ? 'completed' : 'no_completed'} htmlFor={task.id.toString()}>
-                        <FiCircle />
-                        {task.title}
-                      </label>
-                    </div>
-                    <ButtonRemove onClick={() => handleRemoveTask(task.id)}><FiTrash2 /></ButtonRemove>
-                  </li>
-                )
-              })
-            )}
-
-            {!isFetch && !taskList.length && <p>Não há tarefas cadastradas</p>}
-          </TaskList>
-        </TaskContainer>
-        {completedTaskList.length >= 1 && (
-          <TasksCompleted>
-            <div className='header'><TaskTitle>Completas & Excluidas</TaskTitle>
-              <ButtonRemove onClick={() => {
-                handleRemoveAllTaksCompleted()
-              }} ><FiTrash2 /></ButtonRemove>
-            </div>
+          <HeaderTodo>
+            <Title>Todo List</Title>
+            <NewTask onSubmit={(event) => {
+              event.preventDefault()
+              handleAddTask(taskData)
+            }}>
+              <input value={taskData?.title || ''} onChange={event => setTaskData({ ...taskData, title: event.target.value || '', id: uuidv4(), done: false })} type="text" placeholder="Nova tarefa" />
+              <Button type='submit'><FiArrowRight /></Button>
+            </NewTask>
+          </HeaderTodo>
+          <TaskContainer>
+            <TaskTitle>{taskList.length <= 1 ? 'Tarefa' : 'Tarefas'} {taskList.length}</TaskTitle>
             <TaskList>
-              {completedTaskList.map(task => {
-                return (
-                  <li key={task.id.toString()}>
-                    <div>
-                      {task.done ? <FiCheckSquare /> : <FiX />}
-                      <label className={task.done ? 'completed' : 'no_completed'} >
-                        {task.title}
-                      </label>
-                    </div>
-                    <ButtonRemove onClick={() => {
-                      handleReturnTask(task)
-                    }}><FiRotateCcw /></ButtonRemove>
-                  </li>
-                )
-              }).reverse()}
+              {isFetch ? (
+                <>
+                  <Skeletron width='100%' height='2rem' />
+                  <Skeletron width='100%' height='2rem' />
+                  <Skeletron width='100%' height='2rem' />
+                  <Skeletron width='100%' height='2rem' />
+                </>
+              ) : (
+                taskList?.map(task => {
+                  return (
+                    <li key={task.id.toString()}>
+                      <div className='text_data'>
+                        <input ref={inputRef} hidden onClick={(event) => {
+                          event.currentTarget.checked ? handleCheckTask(task) : handleReturnTask(task)
+                        }} name='check' id={task.id.toString()} type="checkbox" />
+                        <label className={task.done ? 'completed' : 'no_completed'} htmlFor={task.id.toString()}>
+                          {task.title}
+                        </label>
+                      </div>
+                      <ButtonRemove onClick={() => handleRemoveTask(task.id)}><FiTrash2 /></ButtonRemove>
+                    </li>
+                  )
+                })
+              )}
+
+              {!isFetch && !taskList.length && <p>Não há tarefas cadastradas</p>}
             </TaskList>
-          </TasksCompleted>
-        )}
+          </TaskContainer>
+        <TasksCompleted>
+          {completedTaskList.length >= 1 && (
+            <>
+              <div className='header'><TaskTitle>Completas & Excluidas</TaskTitle>
+                <ButtonRemove onClick={() => {
+                  handleRemoveAllTaksCompleted()
+                }} ><FiTrash2 /></ButtonRemove>
+              </div>
+              <TaskList>
+                {completedTaskList.map(task => {
+                  return (
+                    <li key={task.id.toString()}>
+                      <div>
+                        <label className={task.done ? 'completed' : 'no_completed'} >
+                          {task.title}
+                        </label>
+                      </div>
+                      <ButtonRemove onClick={() => {
+                        handleReturnTask(task)
+                      }}><FiRotateCcw /></ButtonRemove>
+                    </li>
+                  )
+                }).reverse()}
+              </TaskList>
+            </>
+          )}
+        </TasksCompleted>
       </ContainerTodo>
     </Container>
   )
