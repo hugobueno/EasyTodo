@@ -23,6 +23,9 @@ const Login: React.FC = () => {
                 name: user.name,
                 email: user.email
             })
+            setAuth(true)
+            window.location.reload()
+
         }
         return
     }
@@ -30,12 +33,7 @@ const Login: React.FC = () => {
     useEffect(() => {
         if (session) {
             handleSignInEasyTodo()
-            setTimeout(() => {
-                setAuth(true)
-            }, 4000)
         }
-        console.log(session);
-        
     }, [session])
 
     return (
