@@ -10,7 +10,7 @@ import { useRef } from 'react';
 const Pomodoro: React.FC = () => {
 
     const { colors } = useContext(ThemeContext);
-    const defaultTime = 25 * 60;
+    const defaultTime = 5 * 1;
     const smallBreakTime = 5 * 60;
     const bigBreakTime = 10 * 60;
     const [time, setTime] = useState(defaultTime);
@@ -90,8 +90,10 @@ const Pomodoro: React.FC = () => {
         }
     
         if (isPlaying) {
+            audioRef.current.muted = false
             audioRef.current.play()
         } else {
+            audioRef.current.muted = true
             audioRef.current.pause()
         }
       }, [isPlaying])
@@ -114,6 +116,7 @@ const Pomodoro: React.FC = () => {
                         <audio
                             src='/audio/beep.mp3'
                             autoPlay={true}
+                            muted
                             ref={audioRef}
                             onPlay={() => setPlayingState(true)}
                             onPause={() => setPlayingState(false)}

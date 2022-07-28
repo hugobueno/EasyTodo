@@ -34,7 +34,9 @@ const Login: React.FC = () => {
                 setAuth(true)
             }, 4000)
         }
-    }, [session, ])
+        console.log(session);
+        
+    }, [session])
 
     return (
         <LoginContainer auth={auth} >
