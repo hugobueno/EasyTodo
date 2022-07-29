@@ -85,12 +85,20 @@ const Pomodoro: React.FC = () => {
     }, [isRunning]);
 
     useEffect(()=> {
+        console.log(isPlaying);
+        
         if (!audioRef.current) {
             return;
         }
     
+       let playPromise = audioRef.current.play();
         if (isPlaying) {
-            audioRef.current.play()
+            playPromise.then(()=>{
+                setTimeout(() => {
+                    // Follow up operation
+                    console.log("done.");
+                }, audioRef.current?.duration || 1 * 1000); // audio.duration is the length of the audio in seconds.
+            })
         } else {
             audioRef.current.pause()
         }
@@ -115,8 +123,8 @@ const Pomodoro: React.FC = () => {
                             src='/audio/beep.mp3'
                             autoPlay={true}
                             ref={audioRef}
-                            onPlay={() => setPlayingState(true)}
-                            onPause={() => setPlayingState(false)}
+                            // onPlay={() => setPlayingState(true)}
+                            // onPause={() => setPlayingState(false)}
                         />
                         {isRunning ? (
                             <Button isActive={isRunning} onClick={handlePause}>Pause <FiPause /></Button>
