@@ -90,10 +90,8 @@ const Pomodoro: React.FC = () => {
         }
     
         if (isPlaying) {
-            audioRef.current.muted = false
             audioRef.current.play()
         } else {
-            audioRef.current.muted = true
             audioRef.current.pause()
         }
       }, [isPlaying])
@@ -116,7 +114,6 @@ const Pomodoro: React.FC = () => {
                         <audio
                             src='/audio/beep.mp3'
                             autoPlay={true}
-                            muted
                             ref={audioRef}
                             onPlay={() => setPlayingState(true)}
                             onPause={() => setPlayingState(false)}
