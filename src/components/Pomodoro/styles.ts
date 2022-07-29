@@ -101,7 +101,6 @@ export const Button = styled.button`
         border: .125rem solid ${props => props.theme.colors.primary};
         border-radius: .5rem;
         padding: 1rem;
-        margin: .2rem;
         font-size: 1.2rem;
         font-weight: 500;
         cursor: pointer;
@@ -111,7 +110,6 @@ export const Button = styled.button`
         display: flex;
         justify-content: center;
         align-items: center;
-
         svg{
             font-size: 1rem;
             margin-left: .5rem;
@@ -137,6 +135,7 @@ export const ContainerControlers = styled.div`
     div{
         display: flex;
         flex-direction: column;
+        gap: .5rem;
     }
 
 `;
@@ -148,8 +147,9 @@ export const DetailPomo = styled.div`
     justify-content: center;
     width: 100%;
     height: auto;
-    padding: 2rem 0 ;
     flex-wrap: wrap;
+    gap: 1rem;
+    
     h1{
         font-size: 1.5rem;
         font-weight: 400;
@@ -174,7 +174,6 @@ export const Badge = styled.div`
     align-items: center;
     height: 3rem;
     width: 75%;
-    padding: 0 1rem ;
     background-color: ${(props: IBadge) => props.bgColor ? props.bgColor : '#3c40c6'};
     border-radius: .5rem;
     color:  ${props => props.theme.colors.text};
@@ -186,12 +185,11 @@ export const Badge = styled.div`
 export const PomoTimer = styled.div`
     display: grid;
     grid-template-columns: auto auto;
-    grid-gap: 2rem;
+    grid-gap: rem;
     justify-content: flex-start;
     align-items: center;
-    /* background-color: #f0f; */
     width: 100%;
-
+    gap: 2rem;
     @media only screen and (max-width: 530px) {
         grid-gap: 1rem;
     }
@@ -205,7 +203,6 @@ export const PomoHeader = styled.div`
     justify-content: flex-start;
     width: 100%;
     height: fit-content;
-    padding: 1rem 0;
     color: ${props => props.theme.colors.text};
 
 `;
@@ -215,12 +212,10 @@ export const CardDetail = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-                
     width: 45%;
     height: 14rem;
     background-color: ${props => props.theme.colors.background};
     box-shadow: 0 0 .5rem rgba(0,0,0,.05);
-    margin: 0 1rem 1rem 0;
     border-radius: 2rem;
 
     @media only screen and (max-width: 375px) {

@@ -10,7 +10,7 @@ import { useRef } from 'react';
 const Pomodoro: React.FC = () => {
 
     const { colors } = useContext(ThemeContext);
-    const defaultTime = 5 * 1;
+    const defaultTime = 25 * 60;
     const smallBreakTime = 5 * 60;
     const bigBreakTime = 10 * 60;
     const [time, setTime] = useState(defaultTime);
@@ -19,41 +19,29 @@ const Pomodoro: React.FC = () => {
     const [isBreak, setIsBreak] = useState(false);
     const [pomos, setPomos] = useState(0);
     const [breaks, setBreaks] = useState(0);
-
     const audioRef = useRef<HTMLAudioElement>(null)
-
     const [isPlaying, setIsPlaying] = useState(false)
 
-    function setPlayingState(state:boolean) {
-      setIsPlaying(state)
+    const setPlayingState = (state: boolean) => {
+        setIsPlaying(state)
     }
-  
-    function toggleIsPlaying() {
-      setIsPlaying(!isPlaying)
-    }
-  
-
     const handleStart = () => {
         setIsRunning(true);
     }
-
     const handlePause = () => {
         setIsRunning(false);
     }
-
     const handleReset = () => {
         setIsRunning(false);
         setIsFinished(false);
         setIsBreak(false);
         setTime(defaultTime);
     }
-
     const handleFinish = () => {
         setIsRunning(false);
         handleReset()
         setPomos(pomos + 1);
     }
-
     useEffect(() => {
         if (time === 0 && !isBreak) {
             const timeBreack = pomos > 0 ? pomos % 3 === 0 ? bigBreakTime : smallBreakTime : smallBreakTime
@@ -62,7 +50,6 @@ const Pomodoro: React.FC = () => {
             setTime(timeBreack)
             setBreaks(breaks + 1)
             setPlayingState(true)
-
         }
         if (time === 0 && isBreak) {
             setIsRunning(false)
@@ -79,21 +66,17 @@ const Pomodoro: React.FC = () => {
             const interval = setInterval(() => {
                 setTime(time => time - 1);
             }, 1000);
-
             return () => clearInterval(interval);
         }
     }, [isRunning]);
 
-    useEffect(()=> {
-        console.log(isPlaying);
-        
+    useEffect(() => {
         if (!audioRef.current) {
             return;
         }
-    
-       let playPromise = audioRef.current.play();
+        let playPromise = audioRef.current.play();
         if (isPlaying) {
-            playPromise.then(()=>{
+            playPromise.then(() => {
                 setTimeout(() => {
                     // Follow up operation
                     console.log("done.");
@@ -102,8 +85,8 @@ const Pomodoro: React.FC = () => {
         } else {
             audioRef.current.pause()
         }
-      }, [isPlaying])
-    
+    }, [isPlaying])
+
 
     return (
 
@@ -123,13 +106,11 @@ const Pomodoro: React.FC = () => {
                             src='/audio/beep.mp3'
                             autoPlay={true}
                             ref={audioRef}
-                            // onPlay={() => setPlayingState(true)}
-                            // onPause={() => setPlayingState(false)}
                         />
                         {isRunning ? (
                             <Button isActive={isRunning} onClick={handlePause}>Pause <FiPause /></Button>
                         ) : (
-                            <Button isActive={isRunning} onClick={()=>{
+                            <Button isActive={isRunning} onClick={() => {
                                 handleStart()
                             }}>Iniciar <FiPlay /></Button>
                         )}
